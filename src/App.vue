@@ -1,15 +1,41 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <input type="text" v-model="key">
+  <button v-on:click="check()">search</button>
+  <div>{{balance}}</div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
 export default {
-  name: 'App',
-  components: {
-    HelloWorld
+  data() {
+    return {
+      key: '',
+      balance: ''
+    }
+  },
+  methods: {
+    async check()  {
+      let url = 'https://eth-mainnet.alchemyapi.io/v2/demo'
+      let request = {
+        "id": 1,
+        "jsonrpc": "2.0",
+        "params": 
+        [
+          this.key,
+          "latest"
+        ],
+      "method": "eth_getBalance"
+      }
+    let response = await fetch(url, {
+      method: 'POST',
+      headers: 
+      {
+        'Content-Type': 'application/json;charset=utf-8'
+      },
+       body: JSON.stringify(request)
+      })
+    let result = await response.json();
+    this.balance = parseInt(result.result, 16)
+    }
   }
 }
 </script>
