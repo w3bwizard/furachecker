@@ -21,6 +21,10 @@ async function getBalance(wallet) {
      body: JSON.stringify(request)
   })
   let result = await response.json();
-  return result.result
+  return roundBalance(result.result)
+}
+
+function roundBalance(balance) {
+  return (parseInt(balance) / 1000000000000000000).toFixed(5)
 }
 
